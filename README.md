@@ -24,9 +24,6 @@ Send single and bulk SMS messages from your WordPress admin dashboard using the 
 3. Go to **SMS Gateway → Settings** and enter your SMS Gateway Cloud username, password, and device ID.
 4. Go to **SMS Gateway → Send SMS** to send a message.
 
-```bash
-git clone https://github.com/yourusername/wp-sms-gateway.git wp-content/plugins/wp-sms-gateway
-```
 
 ## Usage
 
