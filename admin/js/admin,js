@@ -1,0 +1,58 @@
+jQuery(function ($) {
+	'use strict';
+
+	$('#send_single').on('click', function () {
+		var $btn = $(this).prop('disabled', true);
+
+		$.post(wpsmsGateway.ajaxUrl, {
+			action: 'wpsms_send_single',
+			nonce: wpsmsGateway.nonce,
+			mobile: $('#single_mobile').val(),
+			message: $('#single_message').val()
+		})
+			.done(function (response) {
+				$('#single_result').html(response.data);
+			})
+			.fail(function () {
+				$('#single_result').text('Request failed. Please try again.');
+			})
+			.always(function () {
+				$btn.prop('disabled', false);
+			});
+	});
+
+	$('#send_bulk').on('click', function () {
+		var fileInput = $('#csv_file')[0];
+
+		if (!fileInput.files.length) {
+			$('#bulk_result').text('Please choose a CSV file.');
+			return;
+		}
+
+		var $btn = $(this).prop('disabled', true);
+
+		var formData = new FormData();
+		formData.append('action', 'wpsms_send_bulk');
+		formData.append('nonce', wpsmsGateway.nonce);
+		formData.append('csv_file', fileInput.files[0]);
+		formData.append('same_message', $('#same_message').val());
+		formData.append('use_csv_message', $('#use_csv_message').is(':checked') ? 1 : 0);
+
+		$.ajax({
+			url: wpsmsGateway.ajaxUrl,
+			type: 'POST',
+			data: formData,
+			processData: false,
+			contentType: false
+		})
+			.done(function (response) {
+				$('#bulk_result').html(response.data);
+			})
+			.fail(function () {
+				$('#bulk_result').text('Request failed. Please try again.');
+			})
+			.always(function () {
+				$btn.prop('disabled', false);
+			});
+	});
+});
